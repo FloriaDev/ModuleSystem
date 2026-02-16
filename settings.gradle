@@ -1,0 +1,11 @@
+rootProject.name = 'ModuleSystem'
+
+include 'ModuleAPI-Paper'
+include 'ModuleAPI-Velocity'
+include 'ModuleSystem-Paper'
+include 'ModuleSystem-Velocity'
+
+project(":ModuleAPI-Paper").projectDir = file("ModuleAPI-Paper")
+project(":ModuleAPI-Velocity").projectDir = file("ModuleAPI-Velocity")
+project(":ModuleSystem-Paper").projectDir = file("ModuleSystem-Paper")
+project(":ModuleSystem-Velocity").projectDir = file("ModuleSystem-Velocity")

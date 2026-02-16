@@ -1,0 +1,88 @@
+plugins {
+    id 'base'
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+        google()
+        maven { url "https://repo.papermc.io/repository/maven-public/" }
+    }
+}
+
+apply from: "gradle/createLocalProperties.gradle"
+
+tasks.register('initProperties') {
+    group = "setup"
+    description = "Recreate local gradle.properties from gradle.properties.example"
+
+    doLast {
+        def localFile = rootProject.file('gradle.properties')
+        def exampleFile = rootProject.file('gradle.properties.example')
+
+        if (!exampleFile.exists()) {
+            throw new GradleException("Example file gradle.properties.example does not exist!")
+        }
+
+        println "Creating/updating local gradle.properties from example..."
+        localFile.withWriter('UTF-8') { writer ->
+            writer << exampleFile.text
+        }
+    }
+}
+
+tasks.register('buildPaperAPI') {
+    def moduleApiProject = project.rootProject.findProject(":ModuleSystem:ModuleAPI-Paper")
+    if (moduleApiProject != null) {
+        dependsOn ':ModuleSystem:ModuleAPI-Paper:shadowJar'
+    } else {
+        dependsOn ':ModuleAPI-Paper:shadowJar'
+    }
+}
+
+tasks.register('buildVelocityAPI') {
+    def moduleApiProject = project.rootProject.findProject(":ModuleSystem:ModuleAPI-Velocity")
+    if (moduleApiProject != null) {
+        dependsOn ':ModuleSystem:ModuleAPI-Velocity:shadowJar'
+    } else {
+        dependsOn ':ModuleAPI-Velocity:shadowJar'
+    }
+}
+
+tasks.register('buildAllAPIs') {
+    dependsOn buildPaperAPI, buildVelocityAPI
+}
+
+tasks.register('buildPaperSystem') {
+    def moduleApiProject = project.rootProject.findProject(":ModuleSystem:ModuleAPI-Paper")
+    if (moduleApiProject != null) {
+        dependsOn ':ModuleSystem:ModuleSystem-Paper:shadowJar'
+    } else {
+        dependsOn ':ModuleSystem-Paper:shadowJar'
+    }
+}
+
+tasks.register('buildVelocitySystem') {
+    def moduleApiProject = project.rootProject.findProject(":ModuleSystem:ModuleAPI-Velocity")
+    if (moduleApiProject != null) {
+        dependsOn ':ModuleSystem:ModuleSystem-Velocity:shadowJar'
+    } else {
+        dependsOn ':ModuleSystem-Velocity:shadowJar'
+    }
+}
+
+tasks.register('buildAllSystems') {
+    dependsOn buildPaperSystem, buildVelocitySystem
+}
+
+tasks.register('buildPaperBundle') {
+    dependsOn buildPaperAPI, buildPaperSystem
+}
+
+tasks.register('buildVelocityBundle') {
+    dependsOn buildVelocityAPI, buildVelocitySystem
+}
+
+tasks.register('buildAllBundles') {
+    dependsOn buildPaperBundle, buildVelocityBundle
+}

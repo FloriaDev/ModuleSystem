@@ -1,0 +1,11 @@
+gradle.projectsEvaluated {
+    def localFile = rootProject.file('gradle.properties')
+    def exampleFile = rootProject.file('gradle.properties.example')
+
+    if (!localFile.exists() && exampleFile.exists()) {
+        println "Creating local gradle.properties from example"
+        localFile.withWriter('UTF-8') { writer ->
+            writer << exampleFile.text
+        }
+    }
+}

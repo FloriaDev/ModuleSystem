@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+    id "io.github.goooler.shadow" version "8.1.8"
+}
+
+group = 'ru.feeland'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "velocity"
+        url = "https://repo.papermc.io/repository/maven-public/"
+    }
+}
+
+dependencies {
+    compileOnly("com.velocitypowered:velocity-api:3.4.0-SNAPSHOT")
+    annotationProcessor("com.velocitypowered:velocity-api:3.4.0-SNAPSHOT")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.20.0")
+    implementation("org.spongepowered:configurate-yaml:4.1.2")
+    compileOnly("org.apache.commons:commons-lang3:3.18.0")
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs -= '--release'
+}
+
+shadowJar {
+    def apiPath = "git config --global --get floria.moduleapi-velocity.buildpath".execute().text.trim()
+    if (apiPath != null && !apiPath.allWhitespace) {
+        destinationDirectory = file(apiPath)
+    }
+    archiveClassifier.set("")
+}

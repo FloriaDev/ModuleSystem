@@ -1,0 +1,67 @@
+plugins {
+    id 'java'
+    id "io.github.goooler.shadow" version "8.1.8"
+}
+
+group = 'ru.feeland'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "papermc-repo"
+        url = "https://repo.papermc.io/repository/maven-public/"
+    }
+    maven {
+        name = "Canvas"
+        url = uri("https://maven.canvasmc.io/snapshots")
+    }
+}
+
+def moduleApiProject = project.rootProject.findProject(":ModuleSystem:ModuleAPI-Paper")
+def targetApi = rootProject.findProperty("targetApi") ?: "paper"
+
+println "Building ModuleSystem for: $targetApi"
+
+dependencies {
+    if (targetApi == "folia") {
+        compileOnly("dev.folia:folia-api:1.21.11-R0.1-SNAPSHOT")
+    } else if (targetApi == "canvas") {
+        compileOnly("io.canvasmc.canvas:canvas-api:1.21.11-R0.1-SNAPSHOT")
+    } else {
+        compileOnly "io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT"
+    }
+    if (moduleApiProject != null) {
+        implementation project(':ModuleSystem:ModuleAPI-Paper')
+    } else {
+        implementation project(':ModuleAPI-Paper')
+    }
+    implementation "dev.triumphteam:triumph-gui:3.1.13"
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs -= '--release'
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}
+
+shadowJar {
+    def pluginsPath = "git config --global --get floria.modulesystem-paper.buildpath".execute().text.trim()
+    if (pluginsPath != null && !pluginsPath.allWhitespace) {
+        destinationDirectory = file(pluginsPath)
+    }
+    archiveClassifier.set("")
+}

@@ -1,0 +1,17 @@
+messages:
+  onlyPlayers: "<red>✘ <white>Эта команда только для игроков."
+  noPermission: "<red>✘ <white>У вас нет прав для использования этой команды."
+  noPlayer: "<red>✘ <white>Игрок не найден или оффлайн."
+  commands:
+    reload:
+      usage: "<yellow>Использование: <white>/modulesystem <yellow>reload"
+      success: "<green>✔ <white>Конфигурации успешно перезагружены!"
+    module:
+      usage: "<yellow>Использование: <white>/module <load|reload|unload> <yellow><module>"
+      successLoad: "<green>✔ <white>Модуль <yellow>%module% <white>загружен"
+      successReload: "<green>✔ <white>Модуль <yellow>%module% <white>перезагружен"
+      successUnload: "<green>✔ <white>Модуль <yellow>%module% <white>отгружен"
+      noModule: "<red>✘ <white>Модуль <yellow>%module% <white>не найден"
+      errorOnLoad: "<red>✘ <white>Ошибка при загрузке <yellow>%module%"
+      notAModule: "<red>✘ <white>Это не модуль <yellow>%module%"
+      notLoaded: "<red>✘ <white>Модуль <yellow>%module% <white>не был загружен"

@@ -1,0 +1,10 @@
+name: ModuleSystem
+version: '1.0'
+main: ru.feeland.modulesystem.ModuleSystem
+api-version: '1.21'
+folia-supported: true
+softdepend:
+  [CoreProtect, AxInventoryRestore, ProtocolLib, PlaceholderAPI, LuckPerms, emotecraft, TAB]
+authors:
+  - feeland
+  - statuxia

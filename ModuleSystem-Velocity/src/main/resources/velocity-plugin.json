@@ -1,0 +1,7 @@
+{
+    "id": "modulesystem",
+    "name": "ModuleSystem",
+    "version": "1.0.0",
+    "description": "Модульная система для Velocity",
+    "authors": ["Floria"]
+}

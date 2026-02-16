@@ -1,0 +1,59 @@
+plugins {
+    id 'java'
+    id "io.github.goooler.shadow" version "8.1.8"
+}
+
+group = 'ru.feeland'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "papermc-repo"
+        url = "https://repo.papermc.io/repository/maven-public/"
+    }
+    maven {
+        name = "Canvas"
+        url = "https://maven.canvasmc.io/snapshots"
+    }
+    maven {
+        name = 'placeholderapi'
+        url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
+    }
+}
+
+def targetApi = rootProject.findProperty("targetApi") ?: "paper"
+
+println "Building ModuleAPI for: $targetApi"
+
+dependencies {
+    if (targetApi == "folia") {
+        compileOnly("dev.folia:folia-api:1.21.11-R0.1-SNAPSHOT")
+    } else if (targetApi == "canvas") {
+        compileOnly("io.canvasmc.canvas:canvas-api:1.21.11-R0.1-SNAPSHOT")
+    } else {
+        compileOnly "io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT"
+    }
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.20.0")
+    compileOnly('org.apache.commons:commons-lang3:3.18.0')
+    implementation "dev.triumphteam:triumph-gui:3.1.13"
+    compileOnly 'me.clip:placeholderapi:2.11.5'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs -= '--release'
+}
+
+shadowJar {
+    def apiPath = "git config --global --get floria.moduleapi-paper.buildpath".execute().text.trim()
+    if (apiPath != null && !apiPath.allWhitespace) {
+        destinationDirectory = file(apiPath)
+    }
+    archiveClassifier.set("")
+}

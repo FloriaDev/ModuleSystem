@@ -1,0 +1,26 @@
+apiToken: ""
+apiUrl: "https://dev-api.floria.su"
+logger:
+  trace: true
+  debug: true
+  info: true
+  warn: true
+  error: true
+commands:
+  module:
+    permission: "module.use"
+  modules:
+    permission: "modules.use"
+  modulesystem:
+    permission: "modulesystem.use"
+sounds:
+  soundYes:
+    sound: "BLOCK.NOTE_BLOCK.PLING"
+    soundCategory: "MASTER"
+    volume: 1f
+    pitch: 2f
+  soundNo:
+    sound: "BLOCK.NOTE_BLOCK.BASS"
+    soundCategory: "MASTER"
+    volume: 1f
+    pitch: 1f

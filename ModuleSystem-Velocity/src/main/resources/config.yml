@@ -1,0 +1,13 @@
+apiToken: ""
+apiUrl: "https://dev-api.shulker.fun"
+logger:
+  trace: true
+  debug: true
+  info: true
+  warn: true
+  error: true
+commands:
+  module:
+    permission: "module.use"
+  modulesystem:
+    permission: "modulesystem.use"
